@@ -35,7 +35,9 @@ Next, open up config.yaml.example. In it, you will find several configuration op
 
 ``es_port`` is the port corresponding to ``es_host``.
 
-``use_ssl``: Optional; whether or not to connect to ``es_host`` using SSL; set to ``True`` or ``False``.
+``use_ssl``: Optional; whether or not to connect to ``es_host`` using TLS; set to ``True`` or ``False``.
+
+``verify_certs``: Optional; whether or not to verify TLS certificates; set to ``True`` or ``False``. The default is ``True``
 
 ``es_username``: Optional; basic-auth username for connecting to ``es_host``.
 
@@ -118,6 +120,15 @@ Testing Your Rule
 Running the ``elastalert-test-rule`` tool will test that your config file successfully loads and run it in debug mode over the last 24 hours::
 
     $ elastalert-test-rule example_rules/example_frequency.yaml
+
+If you want to specify a configuration file to use, you can run it with the config flag.
+
+    $ elastalert-test-rule --config <path-to-config-file> example_rules/example_frequency.yaml.
+    
+The configuration preferences will be loaded as follows:
+    1. Configurations specified in the yaml file.
+    2. Configurations specified in the config file, if specified.
+    3. Default configurations, for the tool to run.
 
 See :ref:`the testing section for more details <testing>`
 
