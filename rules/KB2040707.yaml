@@ -1,0 +1,20 @@
+name: KB2040707
+
+type: any
+
+index: logstash*
+
+filter:
+- query:
+    query_string:
+      query: "msg_text: Cannot AND \"/var/spool/snmp\" AND \"its ramdisk\" AND \"is full\""
+
+realert:
+  minutes: 0
+
+alert:
+  - command
+command: ["ls","/dev/null"]
+
+match_enhancements:
+- "elastalert_modules.rc_enhancements.InvCorrEnhancement"
