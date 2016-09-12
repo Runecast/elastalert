@@ -476,7 +476,7 @@ class ElastAlerter():
                  'sort': {'@timestamp': {'order': 'desc'}}}
         try:
             if self.writeback_es:
-                res = self.writeback_es.search(index=self.writeback_index, doc_type='elastalert_status',
+                res = self.writeback_es.search(index=self.writeback_index+'-*', doc_type='elastalert_status',
                                                size=1, body=query, _source_include=['endtime', 'rule_name'])
                 if res['hits']['hits']:
                     endtime = ts_to_dt(res['hits']['hits'][0]['_source']['endtime'])
@@ -1073,7 +1073,7 @@ class ElastAlerter():
                  'sort': {'alert_time': {'order': 'asc'}}}
         if self.writeback_es:
             try:
-                res = self.writeback_es.search(index=self.writeback_index,
+                res = self.writeback_es.search(index=self.writeback_index+'-*',
                                                doc_type='elastalert',
                                                body=query,
                                                size=1000)
@@ -1143,7 +1143,7 @@ class ElastAlerter():
         matches = []
         if self.writeback_es:
             try:
-                res = self.writeback_es.search(index=self.writeback_index,
+                res = self.writeback_es.search(index=self.writeback_index+'-*',
                                                doc_type='elastalert',
                                                body=query,
                                                size=self.max_aggregation)
@@ -1165,7 +1165,7 @@ class ElastAlerter():
         if not self.writeback_es:
             self.writeback_es = self.new_elasticsearch(self.es_conn_config)
         try:
-            res = self.writeback_es.search(index=self.writeback_index,
+            res = self.writeback_es.search(index=self.writeback_index+'-*',
                                            doc_type='elastalert',
                                            body=query,
                                            size=1)
@@ -1280,7 +1280,7 @@ class ElastAlerter():
 
         if self.writeback_es:
             try:
-                res = self.writeback_es.search(index=self.writeback_index, doc_type='silence',
+                res = self.writeback_es.search(index=self.writeback_index+'-*', doc_type='silence',
                                                size=1, body=query, _source_include=['until', 'exponent'])
             except ElasticsearchException as e:
                 self.handle_error("Error while querying for alert silence status: %s" % (e), {'rule': rule_name})
